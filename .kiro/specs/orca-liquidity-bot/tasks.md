@@ -6,13 +6,13 @@ Rustを使用してOrcaプールでの流動性供給ポジションを自動管
 
 ## Tasks
 
-- [ ] 1. プロジェクト構造とコア型定義の設定
+- [x] 1. プロジェクト構造とコア型定義の設定
   - Cargoプロジェクトの初期化とディレクトリ構造の作成
   - 依存関係の設定（tokio, serde, reqwest, thiserror, proptest等）
   - コアデータ型とエラー型の定義
   - _Requirements: 全般_
 
-- [ ]* 1.1 プロジェクト構造のプロパティテスト
+- [x] 1.1 プロジェクト構造のプロパティテスト
   - **Property 15: Configuration validation**
   - **Validates: Requirements 6.3**
 
