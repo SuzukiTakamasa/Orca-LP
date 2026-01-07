@@ -10,3 +10,4 @@ pub mod scheduler;
 pub use types::*;
 pub use errors::*;
 pub use config::*;
+pub use price_monitor::PriceMonitor;

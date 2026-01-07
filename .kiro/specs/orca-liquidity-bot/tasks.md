@@ -17,20 +17,20 @@ Rustを使用してOrcaプールでの流動性供給ポジションを自動管
   - **Validates: Requirements 6.3**
 
 - [ ] 2. Price Monitorコンポーネントの実装
-  - [ ] 2.1 PriceMonitor構造体と基本メソッドの実装
+  - [x] 2.1 PriceMonitor構造体と基本メソッドの実装
     - 価格データ取得のためのHTTPクライアント設定
     - 現在価格と履歴価格の取得メソッド実装
     - _Requirements: 4.1, 4.2_
 
-  - [ ]* 2.2 価格データ取得のプロパティテスト
+  - [x] 2.2 価格データ取得のプロパティテスト
     - **Property 9: Price data fetching reliability**
     - **Validates: Requirements 4.1, 4.2**
 
-  - [ ] 2.3 価格レンジチェック機能の実装
+  - [x] 2.3 価格レンジチェック機能の実装
     - レンジ内外判定ロジックの実装
     - _Requirements: 1.1_
 
-  - [ ]* 2.4 レンジ監視精度のプロパティテスト
+  - [x] 2.4 レンジ監視精度のプロパティテスト
     - **Property 1: Range monitoring accuracy**
     - **Validates: Requirements 1.1**
 
