@@ -1,5 +1,18 @@
 
-
-# Added by cargo
-
+# Rust
 /target
+Cargo.lock
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

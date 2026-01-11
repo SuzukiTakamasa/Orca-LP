@@ -2,82 +2,104 @@
 
 ## Introduction
 
-Orcaプールでの流動性供給ポジション（SOL-USDC）の収益性を自動的に管理し、最適化するbotシステム。ポジションのレンジ監視、Yieldの自動回収、ポジションの再設定、およびLINE通知機能を提供する。
+OrcaプールでのSOL-USDC流動性供給ポジションの収益性を自動管理し、レンジ逸脱時の自動調整とYield回収を行うbotシステム。価格監視、自動リバランス、LINE通知機能を提供する。
 
 ## Glossary
 
-- **Orca_Pool**: SolanaブロックチェーンのDEXプラットフォームOrcaの流動性プール
-- **Position**: 流動性プールに供給された資産のポジション
-- **Range**: 流動性供給の価格レンジ
-- **Yield**: 流動性供給により得られる収益
-- **Bot_System**: 自動化されたポジション管理システム
-- **LINE_Bot**: LINE Messaging APIを使用した通知システム
-- **Price_Monitor**: 価格監視システム
-- **Position_Manager**: ポジション管理システム
+- **Orca_Bot**: SOL-USDC流動性供給ポジションを自動管理するメインシステム
+- **Position**: Orcaプールでの流動性供給ポジション
+- **Range**: 流動性供給の価格レンジ（上限・下限価格）
+- **Yield**: 流動性供給により獲得した手数料収益
+- **Price_Monitor**: 価格監視コンポーネント
+- **LINE_Notifier**: LINE Bot通知システム
+- **Rebalancer**: ポジション再調整コンポーネント
 
 ## Requirements
 
-### Requirement 1: ポジションレンジ監視
+### Requirement 1: Position Range Monitoring
 
-**User Story:** As a liquidity provider, I want to monitor my position range automatically, so that I can maintain optimal yield generation.
-
-#### Acceptance Criteria
-
-1. WHEN the system runs hourly checks, THE Price_Monitor SHALL check if the current position is within the set range
-2. WHEN both current price and 1-hour-ago price are outside the range, THE Position_Manager SHALL automatically collect yield and reposition
-3. WHEN repositioning occurs, THE Bot_System SHALL calculate new optimal range based on current market conditions
-4. WHEN repositioning is completed, THE LINE_Bot SHALL send notification with position details
-
-### Requirement 2: 自動Yield回収
-
-**User Story:** As a liquidity provider, I want to collect yields automatically on a daily basis, so that I can compound my returns efficiently.
+**User Story:** As a liquidity provider, I want to monitor my position range automatically, so that I can ensure my position remains active and profitable.
 
 #### Acceptance Criteria
 
-1. WHEN the system time reaches 00:00 daily, THE Position_Manager SHALL automatically collect accumulated yield
-2. WHEN yield collection is completed, THE Position_Manager SHALL reposition the liquidity with collected yield included
-3. WHEN daily yield collection occurs, THE LINE_Bot SHALL send notification with yield and position information
+1. WHEN the system runs hourly checks, THE Price_Monitor SHALL retrieve current SOL/USDC price and compare it to the position range
+2. WHEN both current price and 1-hour-ago price are outside the position range, THE Orca_Bot SHALL trigger automatic yield collection and position rebalancing
+3. WHEN price monitoring occurs, THE Price_Monitor SHALL store price history for comparison
+4. WHEN range deviation is detected, THE Orca_Bot SHALL log the deviation event with timestamp and price data
 
-### Requirement 3: LINE通知システム
+### Requirement 2: Automatic Yield Collection and Rebalancing
 
-**User Story:** As a user, I want to receive notifications about my position status, so that I can stay informed about my investment performance.
-
-#### Acceptance Criteria
-
-1. WHEN repositioning occurs due to range deviation, THE LINE_Bot SHALL send notification containing new position range, total balance, SOL/USDC ratio, collected yield amount, and SOL price in USDC
-2. WHEN daily yield collection occurs, THE LINE_Bot SHALL send notification containing total balance, SOL/USDC ratio, collected yield amount, and SOL price in USDC
-3. WHEN notifications are sent, THE LINE_Bot SHALL format messages in Japanese for user readability
-4. WHEN notification sending fails, THE Bot_System SHALL log the error and retry up to 3 times
-
-### Requirement 4: 価格データ取得
-
-**User Story:** As a system, I want to access accurate price data, so that I can make informed positioning decisions.
+**User Story:** As a liquidity provider, I want automatic yield collection and position rebalancing, so that I can maintain optimal returns without manual intervention.
 
 #### Acceptance Criteria
 
-1. WHEN price monitoring occurs, THE Price_Monitor SHALL fetch current SOL/USDC price from reliable sources
-2. WHEN historical price is needed, THE Price_Monitor SHALL retrieve price data from 1 hour ago
-3. WHEN price data is unavailable, THE Bot_System SHALL handle the error gracefully and retry
-4. WHEN price data is fetched, THE Bot_System SHALL validate data integrity before using it
+1. WHEN range deviation triggers rebalancing, THE Rebalancer SHALL collect all accumulated yield from the current position
+2. WHEN yield is collected, THE Rebalancer SHALL close the existing position and create a new position with updated range
+3. WHEN rebalancing is complete, THE Orca_Bot SHALL calculate new position parameters (total balance, SOL/USDC ratio, collected yield amount, current SOL price)
+4. WHEN new position is established, THE LINE_Notifier SHALL send notification with position details
 
-### Requirement 5: ポジション管理
+### Requirement 3: Daily Yield Collection
 
-**User Story:** As a system, I want to manage liquidity positions efficiently, so that I can optimize yield generation.
-
-#### Acceptance Criteria
-
-1. WHEN creating new positions, THE Position_Manager SHALL calculate optimal range based on current volatility and market conditions
-2. WHEN collecting yield, THE Position_Manager SHALL execute the collection transaction and confirm completion
-3. WHEN repositioning, THE Position_Manager SHALL close existing position and create new position atomically
-4. WHEN position operations fail, THE Position_Manager SHALL handle errors and notify via LINE_Bot
-
-### Requirement 6: システム運用
-
-**User Story:** As a system administrator, I want the bot to run reliably in the cloud, so that it can operate continuously without manual intervention.
+**User Story:** As a liquidity provider, I want daily yield collection at midnight, so that I can compound my returns regularly.
 
 #### Acceptance Criteria
 
-1. WHEN deployed to Google Cloud Run, THE Bot_System SHALL run scheduled tasks using Cloud Scheduler
-2. WHEN system errors occur, THE Bot_System SHALL log detailed error information for debugging
-3. WHEN the system starts, THE Bot_System SHALL validate all required configurations and API keys
-4. WHEN system resources are low, THE Bot_System SHALL handle resource constraints gracefully
+1. WHEN the system clock reaches 00:00 JST daily, THE Orca_Bot SHALL trigger yield collection process
+2. WHEN daily yield collection occurs, THE Rebalancer SHALL collect accumulated yield and reestablish the position
+3. WHEN daily collection is complete, THE Orca_Bot SHALL calculate position metrics (total balance, SOL/USDC ratio, yield amount, SOL price)
+4. WHEN daily metrics are calculated, THE LINE_Notifier SHALL send daily report notification
+
+### Requirement 4: LINE Bot Notifications
+
+**User Story:** As a liquidity provider, I want to receive LINE notifications about my position status, so that I can stay informed about my investment performance.
+
+#### Acceptance Criteria
+
+1. WHEN position rebalancing occurs, THE LINE_Notifier SHALL send a message containing new position total balance, SOL/USDC ratio, collected yield amount, and current SOL/USDC price
+2. WHEN daily yield collection occurs, THE LINE_Notifier SHALL send a daily report with the same metrics
+3. WHEN notification sending fails, THE LINE_Notifier SHALL retry up to 3 times with exponential backoff
+4. WHEN all retry attempts fail, THE Orca_Bot SHALL log the notification failure for manual review
+
+### Requirement 5: Orca SDK Integration
+
+**User Story:** As a system operator, I want seamless integration with Orca protocol, so that the bot can interact with Whirlpool positions reliably.
+
+#### Acceptance Criteria
+
+1. WHEN connecting to Orca, THE Orca_Bot SHALL use the official Orca SDK for all pool interactions
+2. WHEN retrieving position data, THE Orca_Bot SHALL query current position status, range, and accumulated fees
+3. WHEN creating new positions, THE Orca_Bot SHALL calculate optimal range based on current market conditions and volatility
+4. WHEN interacting with Solana blockchain, THE Orca_Bot SHALL handle transaction failures gracefully with appropriate retry logic
+
+### Requirement 6: Cloud Infrastructure Integration
+
+**User Story:** As a system operator, I want the bot to run reliably on Google Cloud infrastructure, so that it operates continuously without manual intervention.
+
+#### Acceptance Criteria
+
+1. WHEN deploying the system, THE Orca_Bot SHALL run as a containerized service on Google Cloud Run
+2. WHEN scheduling periodic tasks, THE system SHALL use Google Cloud Scheduler for hourly monitoring and daily yield collection
+3. WHEN managing infrastructure, THE system SHALL be provisioned and managed through Terraform
+4. WHEN system errors occur, THE Orca_Bot SHALL log errors to Google Cloud Logging for monitoring and debugging
+
+### Requirement 7: Error Handling and Recovery
+
+**User Story:** As a system operator, I want robust error handling, so that temporary failures don't disrupt the automated operations.
+
+#### Acceptance Criteria
+
+1. WHEN Solana RPC calls fail, THE Orca_Bot SHALL retry with exponential backoff up to 5 times
+2. WHEN Orca SDK operations fail, THE Orca_Bot SHALL log the error and attempt recovery procedures
+3. WHEN critical errors occur that prevent operation, THE Orca_Bot SHALL send emergency notifications via LINE
+4. WHEN system recovers from errors, THE Orca_Bot SHALL resume normal operations and log recovery status
+
+### Requirement 8: Configuration Management
+
+**User Story:** As a system operator, I want configurable parameters, so that I can adjust bot behavior without code changes.
+
+#### Acceptance Criteria
+
+1. WHEN the system starts, THE Orca_Bot SHALL load configuration from environment variables or config files
+2. WHEN configuration includes sensitive data, THE Orca_Bot SHALL retrieve secrets from Google Secret Manager
+3. WHEN configuration parameters change, THE Orca_Bot SHALL support hot reloading without service restart
+4. WHEN invalid configuration is detected, THE Orca_Bot SHALL fail fast with clear error messages

@@ -1,13 +1,10 @@
-pub mod types;
-pub mod errors;
+pub mod bot;
 pub mod config;
-pub mod price_monitor;
-pub mod position_manager;
-pub mod line_notifier;
-pub mod state_manager;
-pub mod scheduler;
+pub mod error;
+pub mod monitor;
+pub mod notifier;
+pub mod rebalancer;
 
-pub use types::*;
-pub use errors::*;
-pub use config::*;
-pub use price_monitor::PriceMonitor;
+pub use bot::OrcaBot;
+pub use config::Config;
+pub use error::BotError;

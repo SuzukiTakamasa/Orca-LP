@@ -6,15 +6,25 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1.0", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
 reqwest = { version = "0.11", features = ["json"] }
+solana-client = "1.16"
+solana-sdk = "1.16"
 thiserror = "1.0"
 chrono = { version = "0.4", features = ["serde"] }
-uuid = { version = "1.0", features = ["v4", "serde"] }
-tracing = "0.1"
-tracing-subscriber = "0.3"
-anyhow = "1.0"
+env_logger = "0.10"
+log = "0.4"
+anchor-client = "0.28"
+anchor-lang = "0.28"
+
+# Orca Whirlpools SDK - Version conflict resolution pending
+# Issue: Complex dependency conflicts between solana-sdk versions and orca_whirlpools
+# The project structure is ready for integration when conflicts are resolved
+# orca_whirlpools = "6.0"
 
 [dev-dependencies]
 proptest = "1.0"
 tokio-test = "0.4"
+
+[[bin]]
+name = "orca-bot"
+path = "src/main.rs"

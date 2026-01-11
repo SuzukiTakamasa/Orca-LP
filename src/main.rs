@@ -1,20 +1,34 @@
-use orca_liquidity_bot::{load_config, BotError};
-use tracing::info;
+use log::info;
+use std::env;
+
+mod bot;
+mod config;
+mod error;
+mod monitor;
+mod notifier;
+mod rebalancer;
+
+use crate::bot::OrcaBot;
+use crate::config::Config;
+use crate::error::BotError;
 
 #[tokio::main]
 async fn main() -> Result<(), BotError> {
-    // Initialize tracing
-    tracing_subscriber::fmt::init();
-
+    // Initialize logging
+    env_logger::init();
+    
     info!("Starting Orca Liquidity Bot");
-
-    // Load configuration from environment variables
-    let _config = load_config()?;
     
-    info!("Configuration loaded successfully");
+    // Load configuration
+    let config = Config::load_from_env().await?;
     
-    // TODO: Initialize components and start HTTP server
-    // This will be implemented in later tasks
+    // Initialize bot
+    let bot = OrcaBot::new(config).await?;
+    
+    info!("Orca Liquidity Bot initialized successfully");
+    
+    // TODO: Add HTTP server for Cloud Run deployment
+    // TODO: Add scheduled task handlers
     
     Ok(())
 }
