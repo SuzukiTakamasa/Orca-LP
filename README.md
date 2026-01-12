@@ -21,23 +21,30 @@ Automated SOL-USDC liquidity position management bot for Orca protocol on Solana
 ### Known Issues
 
 **Orca Whirlpools SDK Integration**: 
-Currently, there are complex version conflicts between the Orca Whirlpools SDK and the Solana ecosystem dependencies. The project structure is fully prepared for Orca SDK integration:
+Currently, there are complex version conflicts between the Orca Whirlpools SDK and the Solana ecosystem dependencies. However, **Orca operations can be performed without the SDK** using direct Solana/Anchor program calls.
 
-- `Rebalancer` struct has placeholder for `WhirlpoolsClient`
-- All necessary imports and method signatures are ready
-- The dependency is commented out in `Cargo.toml` with detailed notes
+**Direct Implementation Approach:**
+The bot is designed to interact directly with the Orca Whirlpool program using:
+- **Program ID**: `whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc`
+- **Anchor Client**: For building and sending transactions
+- **SPL Token**: For token operations and transfers
 
-**Version Conflict Details:**
-- `orca_whirlpools` v6.0 requires newer cryptographic dependencies (`zeroize` v1.5+)
-- `solana-sdk` v1.16-1.18 uses older cryptographic dependencies (`zeroize` <1.4)
-- This creates an irreconcilable dependency conflict
+**Key Operations Available:**
+1. **Yield Collection**: Direct `collect_fees` instruction calls
+2. **Position Management**: `open_position`, `close_position`, `increase_liquidity`, `decrease_liquidity`
+3. **Price Monitoring**: Reading Whirlpool account data for current prices
+4. **Range Calculations**: Computing optimal tick ranges based on market conditions
 
-**Resolution Options:**
-1. Wait for Solana ecosystem to update to newer cryptographic libraries
-2. Use a fork of orca_whirlpools with compatible dependencies
-3. Implement Orca protocol interactions directly using Anchor/Solana primitives
+**Advantages of Direct Implementation:**
+- No SDK version conflicts
+- Full control over transaction construction
+- Lower-level access to Whirlpool program features
+- Reduced dependency footprint
 
-The bot's core functionality (price monitoring, notifications, scheduling) is fully implemented and ready to use.
+**Implementation Status:**
+- Project structure is ready for direct Whirlpool program interaction
+- Core instruction builders are outlined in `src/rebalancer.rs`
+- All necessary Solana/Anchor dependencies are included
 
 ### Installation
 

@@ -15,11 +15,20 @@ env_logger = "0.10"
 log = "0.4"
 anchor-client = "0.28"
 anchor-lang = "0.28"
+url = "2.4"
 
-# Orca Whirlpools SDK - Version conflict resolution pending
-# Issue: Complex dependency conflicts between solana-sdk versions and orca_whirlpools
-# The project structure is ready for integration when conflicts are resolved
-# orca_whirlpools = "6.0"
+# For direct Whirlpool program interaction
+spl-token = "4.0"
+spl-associated-token-account = "2.2"
+
+# Google Cloud Secret Manager
+google-secretmanager1 = "5.0"
+yup-oauth2 = "8.3"
+hyper = "0.14"
+hyper-rustls = "0.24"
+
+# Orca Whirlpool program constants
+# Program ID: whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc
 
 [dev-dependencies]
 proptest = "1.0"

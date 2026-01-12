@@ -13,8 +13,8 @@ Rustを使用してOrcaプロトコル上でSOL-USDC流動性供給ポジショ�
   - Configure logging with env_logger
   - _Requirements: 8.1_
 
-- [ ] 2. Implement configuration management
-  - [ ] 2.1 Create Config struct and environment variable loading
+- [x] 2. Implement configuration management
+  - [x] 2.1 Create Config struct and environment variable loading
     - Define Config struct with all required fields
     - Implement environment variable loading with validation
     - _Requirements: 8.1, 8.4_
@@ -23,7 +23,7 @@ Rustを使用してOrcaプロトコル上でSOL-USDC流動性供給ポジショ�
     - **Property 13: Configuration loading robustness**
     - **Validates: Requirements 8.1**
 
-  - [ ] 2.3 Implement Google Secret Manager integration
+  - [x] 2.3 Implement Google Secret Manager integration
     - Add secret retrieval functionality for sensitive configuration
     - Ensure secrets are never logged or exposed
     - _Requirements: 8.2_
@@ -32,7 +32,7 @@ Rustを使用してOrcaプロトコル上でSOL-USDC流動性供給ポジショ�
     - **Property 14: Secret management security**
     - **Validates: Requirements 8.2**
 
-  - [ ] 2.5 Add configuration validation and hot reload support
+  - [x] 2.5 Add configuration validation and hot reload support
     - Implement configuration validation with clear error messages
     - Add hot reload functionality for configuration changes
     - _Requirements: 8.3, 8.4_
