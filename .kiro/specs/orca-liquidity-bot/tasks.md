@@ -42,13 +42,13 @@ Rustを使用してOrcaプロトコル上でSOL-USDC流動性供給ポジショ�
     - **Property 16: Configuration validation**
     - **Validates: Requirements 8.3, 8.4**
 
-- [ ] 3. Implement core data models and error types
-  - [ ] 3.1 Create Position, PriceRange, and PriceData structs
+- [x] 3. Implement core data models and error types
+  - [x] 3.1 Create Position, PriceRange, and PriceData structs
     - Define all data structures with proper serialization
     - Implement validation methods for data integrity
     - _Requirements: 1.1, 1.3, 2.1_
 
-  - [ ] 3.2 Implement PriceHistory with storage and retrieval
+  - [x] 3.2 Implement PriceHistory with storage and retrieval
     - Create PriceHistory struct with VecDeque storage
     - Add methods for storing and retrieving historical price data
     - _Requirements: 1.3_
@@ -57,13 +57,13 @@ Rustを使用してOrcaプロトコル上でSOL-USDC流動性供給ポジショ�
     - **Property 3: Price history persistence**
     - **Validates: Requirements 1.3**
 
-  - [ ] 3.4 Define comprehensive error types and BotError enum
+  - [x] 3.4 Define comprehensive error types and BotError enum
     - Create error types for all components with proper error chaining
     - Implement Display and Error traits for all error types
     - _Requirements: 7.1, 7.2, 7.3_
 
-- [ ] 4. Implement Price Monitor component
-  - [ ] 4.1 Create PriceMonitor struct with RPC client integration
+- [x] 4. Implement Price Monitor component
+  - [x] 4.1 Create PriceMonitor struct with RPC client integration
     - Implement Solana RPC client setup and price retrieval
     - Add price comparison logic for range checking
     - _Requirements: 1.1, 1.2_
@@ -73,12 +73,12 @@ Rustを使用してOrcaプロトコル上でSOL-USDC流動性供給ポジショ�
     - **Property 2: Range deviation trigger logic**
     - **Validates: Requirements 1.1, 1.2**
 
-  - [ ] 4.3 Add price history management and deviation detection
+  - [x] 4.3 Add price history management and deviation detection
     - Implement price storage and historical comparison
     - Add logic to detect when both current and 1-hour-ago prices are outside range
     - _Requirements: 1.2, 1.3_
 
-  - [ ] 4.4 Implement event logging for range deviations
+  - [x] 4.4 Implement event logging for range deviations
     - Add structured logging for deviation events with timestamps and price data
     - _Requirements: 1.4_
 

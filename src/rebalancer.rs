@@ -1,15 +1,12 @@
 use crate::config::Config;
 use crate::error::{BotError, RebalanceError};
-use crate::monitor::{Position, PriceRange};
+use crate::models::{Position, PriceRange};
 use serde::{Deserialize, Serialize};
 use solana_client::rpc_client::RpcClient;
 use solana_sdk::{
-    instruction::Instruction,
     pubkey::Pubkey,
     signer::keypair::Keypair,
-    transaction::Transaction,
 };
-use anchor_client::{Client, Cluster, Program};
 use std::str::FromStr;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -101,13 +98,15 @@ impl Rebalancer {
         // - increase_liquidity instruction with token amounts
         // - Proper PDA derivations for position account
         
-        Ok(Position {
-            address: "new_position_placeholder".to_string(),
-            whirlpool: self.config.whirlpool_program_id.to_string(),
-            tick_lower: range.lower_tick,
-            tick_upper: range.upper_tick,
-            liquidity: 0, // Will be set after increase_liquidity
-        })
+        Ok(Position::new(
+            Pubkey::new_unique(), // placeholder address
+            self.config.whirlpool_program_id,
+            range.lower_tick,
+            range.upper_tick,
+            0, // Will be set after increase_liquidity
+            0, // fee_growth_checkpoint_a
+            0, // fee_growth_checkpoint_b
+        ))
     }
     
     pub async fn calculate_optimal_range(&self) -> Result<PriceRange, RebalanceError> {

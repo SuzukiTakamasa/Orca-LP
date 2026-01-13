@@ -1,16 +1,5 @@
 use log::info;
-use std::env;
-
-mod bot;
-mod config;
-mod error;
-mod monitor;
-mod notifier;
-mod rebalancer;
-
-use crate::bot::OrcaBot;
-use crate::config::Config;
-use crate::error::BotError;
+use orca_liquidity_bot::{OrcaBot, Config, BotError};
 
 #[tokio::main]
 async fn main() -> Result<(), BotError> {
@@ -23,7 +12,7 @@ async fn main() -> Result<(), BotError> {
     let config = Config::load_from_env().await?;
     
     // Initialize bot
-    let bot = OrcaBot::new(config).await?;
+    let _bot = OrcaBot::new(config).await?;
     
     info!("Orca Liquidity Bot initialized successfully");
     
